@@ -1,0 +1,5 @@
+# Ignore environment variables
+.env.local
+
+# Ignore dependencies
+node_modules/
