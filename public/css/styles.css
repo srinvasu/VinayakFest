@@ -5,7 +5,8 @@ body, html {
 
   .bg-center {
     height: 100vh;
-    background-image: url('/images/bg-image2.jpg'); /* replace with your image URL */
+    background-color: black;
+    background-image: url('/images/bg-image2.jpg'); /*replace with your image URL */
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
