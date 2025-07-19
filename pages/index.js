@@ -41,11 +41,43 @@ const Home = () => {
     */
     const doc = new jsPDF();
 
-    
+    // Add "PAID" watermark
+    doc.saveGraphicsState(); // Save current graphics state
 
-    // 2. Now reset to normal for receipt content
+    doc.setFontSize(60);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(150); // Light gray
+    doc.setTextColor(200); // Even lighter
+
+    // Draw diagonal watermark text with rotation and low opacity
+    doc.text("PAID", 35, 150, {
+      angle: 45,
+      opacity: 0.1, // Watermark style
+    });
+
+    doc.restoreGraphicsState(); // Restore to previous state
+
+    // Heading 1
     doc.setFontSize(18);
-    doc.text("Indraprasta shanthigram 4th year 2025 ganesh utsav Donation receipt", 105, 20, null, null, "center");
+    doc.text(
+      "INDRAPRASTHA GANESH UTSAV COMMITTEE",
+      105,
+      20, // Y-position for first heading
+      null,
+      null,
+      "center"
+    );
+
+    // Heading 2
+    doc.setFontSize(14);
+    doc.text(
+      "Donation Receipt",
+      105,
+      30, // Move down to separate line (adjust as needed)
+      null,
+      null,
+      "center"
+    );
 
     doc.setLineWidth(0.5);
     doc.line(20, 25, 190, 25); // Top horizontal line
@@ -83,6 +115,22 @@ const Home = () => {
     doc.setFont("helvetica", "normal");
     doc.text(formData.paymentMode, 80, startY);
 
+    startY += 10;
+    doc.setFont("helvetica", "bold");
+    doc.text("Received by:", 30, startY);
+    doc.setFont("helvetica", "normal");
+    doc.text("Indraprastha Youth", 80, startY);
+
+    // Add date next to it or below
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("en-IN"); // Format: DD/MM/YYYY
+
+    startY += 10; // move to next line, or adjust X/Y for side-by-side
+    doc.setFont("helvetica", "bold");
+    doc.text("Date:", 30, startY);
+    doc.setFont("helvetica", "normal");
+    doc.text(formattedDate, 80, startY);
+
     // Bottom line
     doc.line(20, startY + 10, 190, startY + 10);
 
@@ -98,7 +146,7 @@ const Home = () => {
     );
 
     // Save PDF locally on device
-    doc.save("receipt.pdf");
+    doc.save(`Receipt${formData.doorNumber}.pdf`);
 
     const pdfBlob = doc.output("blob");
     const file = new File([pdfBlob], "receipt.pdf", {
@@ -115,7 +163,7 @@ const Home = () => {
       );
       const uploadedUrl = uploadRes.data.data.url;
 
-      const message = `Hi! Here is your receipt for ₹${formData.amount}. Click to download: ${uploadedUrl}`;
+      const message = `Hi! Here is your receipt for ₹${formData.amount}. Donation towards Indrastha Ganesh Utsav. Click to download: ${uploadedUrl} Thanks for your contribution`;
       const whatsappUrl = `https://wa.me/91${
         formData.phoneNumber
       }?text=${encodeURIComponent(message)}`;
