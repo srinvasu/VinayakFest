@@ -9,6 +9,7 @@ const Home = () => {
     amount: "",
     phoneNumber: "",
     paymentMode: "",
+    message: "", // new field
   });
 
   const handleChange = (e) => {
@@ -69,9 +70,10 @@ const Home = () => {
     );
 
     // Heading 2
+    const serialNumber = Math.floor(100000 + Math.random() * 900000); // Random 6-digit
     doc.setFontSize(14);
     doc.text(
-      "Donation Receipt",
+      `Donation Receipt - #${serialNumber}`,
       105,
       30, // Move down to separate line (adjust as needed)
       null,
@@ -116,6 +118,19 @@ const Home = () => {
     doc.text(formData.paymentMode, 80, startY);
 
     startY += 10;
+    doc.setFont("helvetica", "bold");
+    doc.text("Message:", 30, startY);
+    doc.setFont("helvetica", "normal");
+
+    // Split long message into lines to avoid overflow
+    const messageLines = doc.splitTextToSize(formData.message, 100);
+    doc.text(messageLines, 80, startY);
+
+    // Update startY to move below multiline text
+    startY += messageLines.length * 10;
+
+    //startY += 10;
+
     doc.setFont("helvetica", "bold");
     doc.text("Received by:", 30, startY);
     doc.setFont("helvetica", "normal");
@@ -180,6 +195,7 @@ const Home = () => {
       amount: "",
       phoneNumber: "",
       paymentMode: "",
+      message: "", // reset this too
     });
   };
 
@@ -231,6 +247,16 @@ const Home = () => {
               onChange={handleChange}
               required
               pattern="[0-9]{10}"
+            />
+          </div>
+          <div className="mb-3">
+            <label>Message:</label>
+            <textarea
+              name="message"
+              className="form-control"
+              rows="3"
+              value={formData.message}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-3">

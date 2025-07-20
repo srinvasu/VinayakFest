@@ -5,8 +5,12 @@ body, html {
 
   .bg-center {
     height: 100vh;
+    background: 
+    linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+    url('/images/bg-image2.jpg');
+/*
     background-color: black;
-    background-image: url('/images/bg-image2.jpg'); /*replace with your image URL */
+    background-image: url('/images/bg-image2.jpg'); replace with your image URL */
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
